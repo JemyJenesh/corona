@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Icon, Accordion, Header, Select } from "semantic-ui-react";
 import axios from "axios";
 
+const langOptions = [
+  { key: "np", value: "np", text: "Nepali" },
+  { key: "eng", value: "eng", text: "English" }
+];
+
 const Questions = () => {
+  const [lang, setLang] = useState(langOptions[1].value);
   const [questions, setQuestions] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -21,10 +27,23 @@ const Questions = () => {
   }, [questions]);
   return (
     <div>
-      <Header as="h2" style={{ margin: "1rem 0 2rem 0" }}>
-        Frequently asked questions
-      </Header>
-      <Select placeholder="Select your Language" />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
+      >
+        <Header as="h2" style={{ margin: "1rem 0 2rem 0" }}>
+          Frequently asked questions
+        </Header>
+        <Select
+          placeholder="Select your Language"
+          options={langOptions}
+          defaultValue={langOptions[1].value}
+          onChange={(e, { value }) => setLang(value)}
+        />
+      </div>
       <Accordion fluid styled style={{ marginTop: "1rem" }}>
         {questions.length > 0 &&
           questions.map((ques, i) => (
@@ -35,10 +54,10 @@ const Questions = () => {
                 onClick={onQuestionClick}
               >
                 <Icon name="dropdown" />
-                {ques.question}
+                {lang === "eng" ? ques.question : ques.question_np}
               </Accordion.Title>
               <Accordion.Content active={activeIndex === i}>
-                <p>{ques.answer}</p>
+                <p>{lang === "eng" ? ques.answer : ques.answer_np}</p>
               </Accordion.Content>
             </React.Fragment>
           ))}
