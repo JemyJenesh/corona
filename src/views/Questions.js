@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Icon, Accordion, Header } from "semantic-ui-react";
+import { Icon, Accordion, Header, Select } from "semantic-ui-react";
 import axios from "axios";
 
 const Questions = () => {
@@ -24,6 +24,7 @@ const Questions = () => {
       <Header as="h2" style={{ margin: "1rem 0 2rem 0" }}>
         Frequently asked questions
       </Header>
+      <Select placeholder="Select your Language" />
       <Accordion fluid styled style={{ marginTop: "1rem" }}>
         {questions.length > 0 &&
           questions.map((ques, i) => (

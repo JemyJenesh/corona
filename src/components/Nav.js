@@ -4,7 +4,7 @@ import { Menu } from "semantic-ui-react";
 
 const Nav = () => {
   return (
-    <Menu stackable style={{ position: "sticky", top: 0, zIndex: 10 }}>
+    <Menu stackable className="stick">
       <NavLink to="/" exact className="item" activeClassName="active">
         Home
       </NavLink>
