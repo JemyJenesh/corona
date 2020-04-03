@@ -3,19 +3,21 @@ import axios from "axios";
 
 import {
   Statistic,
-  Image,
+  Input,
   Header,
   Label,
   Table,
   Container,
   Grid,
-  Loader
+  Loader,
+  Segment
 } from "semantic-ui-react";
 import StatItem from "./components/StatItem";
 
 const App = () => {
+  const [search, setSearch] = useState("");
   const [countryName, setCountryName] = useState("");
-  const [countryData, setCountryData] = useState(null);
+  const [countryData, setCountryData] = useState({});
   const [globalData, setGlobalData] = useState([]);
 
   const cases = {
@@ -57,61 +59,39 @@ const App = () => {
         padding: "1rem"
       }}
     >
-      {/* <Grid divided>
+      <Grid columns="equal" divided stackable>
         <Grid.Row>
-          <Grid.Column width={7}>
+          <Grid.Column>
             <Header as="h1" textAlign="center">
-              Covid-19 cases in Nepal:
+              Cases in{" "}
+              {countryName === "" ? <Loader active inline /> : countryName}:
             </Header>
             <Statistic.Group horizontal>
               <StatItem
                 color="red"
                 label="Deaths"
-                data={infectionData.totalDeaths}
+                data={countryData.totalDeaths}
               />
               <StatItem
                 color="yellow"
                 label="Active Cases"
-                data={infectionData.activeCases}
+                data={countryData.activeCases}
               />
               <StatItem
                 color="green"
                 label="Recovered"
-                data={infectionData.totalRecovered}
+                data={countryData.totalRecovered}
               />
               <StatItem
                 color="grey"
                 label="Total Cases"
-                data={infectionData.totalCases}
+                data={countryData.totalCases}
               />
             </Statistic.Group>
           </Grid.Column>
-          <Grid.Column width={2}>
+          <Grid.Column>
             <Header as="h1" textAlign="center">
-              Cases
-            </Header>
-            <Statistic.Group horizontal>
-              <Statistic>
-                <Statistic.Value></Statistic.Value>
-                <Statistic.Label>Deaths</Statistic.Label>
-              </Statistic>
-              <Statistic>
-                <Statistic.Value> </Statistic.Value>
-                <Statistic.Label>Active Cases</Statistic.Label>
-              </Statistic>
-              <Statistic>
-                <Statistic.Value> </Statistic.Value>
-                <Statistic.Label>Recovered</Statistic.Label>
-              </Statistic>
-              <Statistic>
-                <Statistic.Value> </Statistic.Value>
-                <Statistic.Label>Total Cases</Statistic.Label>
-              </Statistic>
-            </Statistic.Group>
-          </Grid.Column>
-          <Grid.Column width={7}>
-            <Header as="h1" textAlign="center">
-              Covid-19 cases in the World:
+              Cases in the World:
             </Header>
             <Statistic.Group horizontal>
               <StatItem
@@ -147,9 +127,9 @@ const App = () => {
             </Statistic.Group>
           </Grid.Column>
         </Grid.Row>
-      </Grid> */}
+      </Grid>
 
-      <Table unstackable basic="very" celled collapsing textAlign="center">
+      {/* <Table unstackable basic="very" celled collapsing textAlign="center">
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>
@@ -163,7 +143,6 @@ const App = () => {
             <Table.HeaderCell>World</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-
         <Table.Body>
           {Object.keys(cases).map((key, value) => (
             <Table.Row key={key}>
@@ -181,7 +160,7 @@ const App = () => {
                 positive={
                   key === "Recovered" &&
                   countryData !== null &&
-                  countryData[cases[key]] === 0
+                  countryData[cases[key]] > 0
                 }
               >
                 {countryData !== null ? (
@@ -207,8 +186,16 @@ const App = () => {
             </Table.Row>
           ))}
         </Table.Body>
-      </Table>
-
+      </Table> */}
+      <Segment style={{ display: "flex" }}>
+        <Input
+          icon="search"
+          placeholder="Search..."
+          style={{ marginLeft: "auto", display: "inline-block" }}
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      </Segment>
       <Table celled>
         <Table.Header>
           <Table.Row>
@@ -223,24 +210,30 @@ const App = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {globalData.map(data => (
-            <Table.Row key={data._id}>
-              <Table.Cell>
-                {data.country === "" ? "World" : data.country}
-              </Table.Cell>
-              <Table.Cell>{data.totalCases}</Table.Cell>
-              <Table.Cell warning={data.newCases > 0}>
-                {data.newCases === 0 ? "" : "+" + data.newCases}
-              </Table.Cell>
-              <Table.Cell>{data.totalDeaths}</Table.Cell>
-              <Table.Cell error={data.newDeaths > 0}>
-                {data.newDeaths === 0 ? "" : "+" + data.newDeaths}
-              </Table.Cell>
-              <Table.Cell>{data.activeCases}</Table.Cell>
-              <Table.Cell positive>{data.totalRecovered}</Table.Cell>
-              <Table.Cell error>{data.criticalCases}</Table.Cell>
-            </Table.Row>
-          ))}
+          {globalData
+            .filter(
+              data =>
+                data.country.substring(0, search.length).toLowerCase() ===
+                search.toLowerCase()
+            )
+            .map(data => (
+              <Table.Row key={data._id}>
+                <Table.Cell>
+                  {data.country === "" ? "World" : data.country}
+                </Table.Cell>
+                <Table.Cell>{data.totalCases}</Table.Cell>
+                <Table.Cell warning={data.newCases > 0}>
+                  {data.newCases === 0 ? "" : "+" + data.newCases}
+                </Table.Cell>
+                <Table.Cell>{data.totalDeaths}</Table.Cell>
+                <Table.Cell error={data.newDeaths > 0}>
+                  {data.newDeaths === 0 ? "" : "+" + data.newDeaths}
+                </Table.Cell>
+                <Table.Cell>{data.activeCases}</Table.Cell>
+                <Table.Cell positive>{data.totalRecovered}</Table.Cell>
+                <Table.Cell error>{data.criticalCases}</Table.Cell>
+              </Table.Row>
+            ))}
         </Table.Body>
         {globalData.length > 0 && (
           <Table.Footer>
