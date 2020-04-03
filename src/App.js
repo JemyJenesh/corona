@@ -1,22 +1,52 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import { Statistic, Header, Label, Table, Container } from "semantic-ui-react";
+import {
+  Statistic,
+  Image,
+  Header,
+  Label,
+  Table,
+  Container,
+  Grid,
+  Loader
+} from "semantic-ui-react";
 import StatItem from "./components/StatItem";
 
 const App = () => {
-  const [infectionData, setInfectionData] = useState({});
+  const [countryName, setCountryName] = useState("");
+  const [countryData, setCountryData] = useState(null);
   const [globalData, setGlobalData] = useState([]);
 
+  const cases = {
+    Deaths: "totalDeaths",
+    Active: "activeCases",
+    Recovered: "totalRecovered",
+    Total: "totalCases",
+    Critical: "criticalCases"
+  };
+
+  const getGeoInfo = () => {
+    axios.get("https://ipapi.co/json/").then(response => {
+      let data = response.data;
+      setCountryName(data.country_name);
+    });
+  };
+
   useEffect(() => {
-    globalData.length === 0 &&
+    if (countryName === "") getGeoInfo();
+    if (globalData.length === 0) {
       axios("https://nepalcorona.info/api/v1/data/world").then(res => {
         setGlobalData(res.data);
       });
-    globalData.filter(data =>
-      data.country === "Nepal" ? setInfectionData(data) : null
-    );
-  }, [globalData]);
+    } else if (globalData.length > 0 && countryName !== "") {
+      globalData.filter(data =>
+        data.country !== "" && data.country === countryName
+          ? setCountryData(data)
+          : null
+      );
+    }
+  }, [globalData, countryName, countryData]);
 
   return (
     <Container
@@ -24,29 +54,160 @@ const App = () => {
         minHeight: "100%",
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start",
         padding: "1rem"
       }}
     >
-      <Header as="h1">Covid-19 cases in Nepal:</Header>
-      <Statistic.Group horizontal>
-        <StatItem color="red" label="Deaths" data={infectionData.totalDeaths} />
-        <StatItem
-          color="yellow"
-          label="Active Cases"
-          data={infectionData.activeCases}
-        />
-        <StatItem
-          color="green"
-          label="Recovered"
-          data={infectionData.totalRecovered}
-        />
-        <StatItem
-          color="grey"
-          label="Total Cases"
-          data={infectionData.totalCases}
-        />
-      </Statistic.Group>
+      {/* <Grid divided>
+        <Grid.Row>
+          <Grid.Column width={7}>
+            <Header as="h1" textAlign="center">
+              Covid-19 cases in Nepal:
+            </Header>
+            <Statistic.Group horizontal>
+              <StatItem
+                color="red"
+                label="Deaths"
+                data={infectionData.totalDeaths}
+              />
+              <StatItem
+                color="yellow"
+                label="Active Cases"
+                data={infectionData.activeCases}
+              />
+              <StatItem
+                color="green"
+                label="Recovered"
+                data={infectionData.totalRecovered}
+              />
+              <StatItem
+                color="grey"
+                label="Total Cases"
+                data={infectionData.totalCases}
+              />
+            </Statistic.Group>
+          </Grid.Column>
+          <Grid.Column width={2}>
+            <Header as="h1" textAlign="center">
+              Cases
+            </Header>
+            <Statistic.Group horizontal>
+              <Statistic>
+                <Statistic.Value></Statistic.Value>
+                <Statistic.Label>Deaths</Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value> </Statistic.Value>
+                <Statistic.Label>Active Cases</Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value> </Statistic.Value>
+                <Statistic.Label>Recovered</Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value> </Statistic.Value>
+                <Statistic.Label>Total Cases</Statistic.Label>
+              </Statistic>
+            </Statistic.Group>
+          </Grid.Column>
+          <Grid.Column width={7}>
+            <Header as="h1" textAlign="center">
+              Covid-19 cases in the World:
+            </Header>
+            <Statistic.Group horizontal>
+              <StatItem
+                color="red"
+                label="Deaths"
+                data={
+                  globalData.length > 0 ? globalData[0].totalDeaths : undefined
+                }
+              />
+              <StatItem
+                color="yellow"
+                label="Active Cases"
+                data={
+                  globalData.length > 0 ? globalData[0].activeCases : undefined
+                }
+              />
+              <StatItem
+                color="green"
+                label="Recovered"
+                data={
+                  globalData.length > 0
+                    ? globalData[0].totalRecovered
+                    : undefined
+                }
+              />
+              <StatItem
+                color="grey"
+                label="Total Cases"
+                data={
+                  globalData.length > 0 ? globalData[0].totalCases : undefined
+                }
+              />
+            </Statistic.Group>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid> */}
+
+      <Table unstackable basic="very" celled collapsing textAlign="center">
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>
+              {countryData === null ? (
+                <Loader active inline />
+              ) : (
+                countryData.country
+              )}
+            </Table.HeaderCell>
+            <Table.HeaderCell>Cases</Table.HeaderCell>
+            <Table.HeaderCell>World</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+          {Object.keys(cases).map((key, value) => (
+            <Table.Row key={key}>
+              <Table.Cell
+                error={
+                  key === "Deaths" &&
+                  countryData !== null &&
+                  countryData[cases[key]] > 0
+                }
+                warning={
+                  key === "Critical" &&
+                  countryData !== null &&
+                  countryData[cases[key]] > 0
+                }
+                positive={
+                  key === "Recovered" &&
+                  countryData !== null &&
+                  countryData[cases[key]] === 0
+                }
+              >
+                {countryData !== null ? (
+                  countryData[cases[key]]
+                ) : (
+                  <Loader active inline />
+                )}
+              </Table.Cell>
+              <Table.Cell width="4">
+                <b>{key}</b>
+              </Table.Cell>
+              <Table.Cell
+                error={key === "Deaths"}
+                warning={key === "Critical"}
+                positive={key === "Recovered"}
+              >
+                {globalData.length > 0 ? (
+                  globalData[0][cases[key]]
+                ) : (
+                  <Loader active inline />
+                )}
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
 
       <Table celled>
         <Table.Header>
@@ -109,7 +270,7 @@ const App = () => {
         )}
       </Table>
       <br />
-      {infectionData.latest_sit_report && (
+      {/* {infectionData.latest_sit_report && (
         <>
           <Label color="teal">
             Updated At
@@ -129,7 +290,7 @@ const App = () => {
             <Label.Detail>{infectionData.latest_sit_report.date}</Label.Detail>
           </Label>
         </>
-      )}
+      )} */}
     </Container>
   );
 };
