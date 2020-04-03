@@ -28,6 +28,7 @@ const Questions = () => {
   return (
     <div>
       <div
+        className="questions-header"
         style={{
           display: "flex",
           justifyContent: "space-between",
