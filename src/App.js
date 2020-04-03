@@ -187,7 +187,7 @@ const App = () => {
           ))}
         </Table.Body>
       </Table> */}
-      <Segment style={{ display: "flex" }}>
+      <Segment style={{ display: "flex" }} vertical>
         <Input
           icon="search"
           placeholder="Search..."
