@@ -1,6 +1,7 @@
-// store.js
 import React, { createContext, useReducer } from "react";
 import axios from "axios";
+
+import reducer from "../reducers/rootReducer";
 
 const store = createContext();
 const { Provider } = store;
@@ -15,26 +16,11 @@ const initialState = {
   mythsLoaded: false,
 };
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "LOAD_CORONA_DATA":
-      return { ...state, coronaData: action.payload, coronaDataLoaded: true };
-    case "LOAD_NEPAL_DATA":
-      console.log(action.payload);
-      return { ...state, nepalData: action.payload, nepalDataLoaded: true };
-    case "LOAD_QUESTIONS":
-      return { ...state, questions: action.payload, questionsLoaded: true };
-    case "LOAD_MYTHS":
-      return { ...state, myths: action.payload, mythsLoaded: true };
-    default:
-      return state;
-  }
-};
-
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const value = {
+    dispatch: dispatch,
     coronaData: state.coronaData,
     coronaDataLoaded: state.coronaDataLoaded,
     loadCoronaData: () => {
