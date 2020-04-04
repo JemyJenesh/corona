@@ -55,10 +55,20 @@ const Questions = () => {
                 onClick={onQuestionClick}
               >
                 <Icon name="dropdown" />
-                {lang === "eng" ? ques.question : ques.question_np}
+                {lang === "eng"
+                  ? ques.question
+                  : ques.question_np
+                  ? ques.question_np
+                  : ques.question}
               </Accordion.Title>
               <Accordion.Content active={activeIndex === i}>
-                <p>{lang === "eng" ? ques.answer : ques.answer_np}</p>
+                <p>
+                  {lang === "eng"
+                    ? ques.answer
+                    : ques.answer_np
+                    ? ques.answer_np
+                    : ques.answer}
+                </p>
               </Accordion.Content>
             </React.Fragment>
           ))}

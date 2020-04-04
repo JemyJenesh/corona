@@ -1,3 +1,27 @@
+body {
+  overflow: overlay;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(0, 0, 0, 0.1);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(0, 0, 0, 0.25);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(0, 0, 0, 0.5);
+}
+
 .stick {
   position: sticky;
   top: 0;
@@ -8,6 +32,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.m-2 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 @media screen and (max-width: 767px) {
