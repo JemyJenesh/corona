@@ -6,6 +6,7 @@ import Nav from "./components/Nav";
 import Home from "./views/Home";
 import Myths from "./views/Myths";
 import Questions from "./views/Questions";
+import { StateProvider } from "./store/contexts/store";
 
 const App = () => {
   return (
@@ -14,15 +15,17 @@ const App = () => {
         minHeight: "100%",
         display: "flex",
         flexDirection: "column",
-        padding: "1rem"
+        padding: "0 1rem 1rem 1rem"
       }}
     >
       <Nav />
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/myths" component={Myths} />
-        <Route path="/questions" component={Questions} />
-      </Switch>
+      <StateProvider>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/myths" component={Myths} />
+          <Route path="/questions" component={Questions} />
+        </Switch>
+      </StateProvider>
     </Container>
   );
 };

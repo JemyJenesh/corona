@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Icon, Accordion, Header, Select, Loader } from "semantic-ui-react";
-import axios from "axios";
+import { store } from "../store/contexts/store";
 
 const langOptions = [
   { key: "np", value: "np", text: "Nepali" },
-  { key: "eng", value: "eng", text: "English" }
+  { key: "eng", value: "eng", text: "English" },
 ];
 
 const Questions = () => {
+  const { loadQuestions, questions, questionsLoaded } = useContext(store);
+
   const [lang, setLang] = useState(langOptions[1].value);
-  const [questions, setQuestions] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onQuestionClick = (e, titleProps) => {
@@ -19,12 +20,9 @@ const Questions = () => {
   };
 
   useEffect(() => {
-    if (!questions) {
-      axios("https://nepalcorona.info/api/v1/faqs").then(res => {
-        setQuestions(res.data.data);
-      });
-    }
-  }, [questions]);
+    loadQuestions();
+  }, []);
+
   return (
     <div>
       <div
@@ -32,7 +30,7 @@ const Questions = () => {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <Header as="h2" style={{ margin: "1rem 0 2rem 0" }}>
@@ -45,30 +43,28 @@ const Questions = () => {
           onChange={(e, { value }) => setLang(value)}
         />
       </div>
-      {questions !== null ? (
-        questions.length > 0 ? (
-          <Accordion fluid styled style={{ marginTop: "1rem" }}>
-            {questions.map((ques, i) => (
-              <React.Fragment key={ques._id}>
-                <Accordion.Title
-                  active={activeIndex === i}
-                  index={i}
-                  onClick={onQuestionClick}
-                >
-                  <Icon name="dropdown" />
-                  {lang === "eng" ? ques.question : ques.question_np}
-                </Accordion.Title>
-                <Accordion.Content active={activeIndex === i}>
-                  <p>{lang === "eng" ? ques.answer : ques.answer_np}</p>
-                </Accordion.Content>
-              </React.Fragment>
-            ))}
-          </Accordion>
-        ) : (
-          "No Questions Asked"
-        )
-      ) : (
+      {!questionsLoaded ? (
         <Loader active />
+      ) : questions.length > 0 ? (
+        <Accordion fluid styled style={{ marginTop: "1rem" }}>
+          {questions.map((ques, i) => (
+            <React.Fragment key={ques._id}>
+              <Accordion.Title
+                active={activeIndex === i}
+                index={i}
+                onClick={onQuestionClick}
+              >
+                <Icon name="dropdown" />
+                {lang === "eng" ? ques.question : ques.question_np}
+              </Accordion.Title>
+              <Accordion.Content active={activeIndex === i}>
+                <p>{lang === "eng" ? ques.answer : ques.answer_np}</p>
+              </Accordion.Content>
+            </React.Fragment>
+          ))}
+        </Accordion>
+      ) : (
+        "No Questions Asked"
       )}
     </div>
   );
