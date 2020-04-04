@@ -14,7 +14,7 @@ const Myths = () => {
 
   useEffect(() => {
     loadMyths();
-  }, []);
+  }, [loadMyths]);
 
   return (
     <div>

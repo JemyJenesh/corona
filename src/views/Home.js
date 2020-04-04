@@ -47,7 +47,7 @@ const Home = () => {
 
   useEffect(() => {
     loadCoronaData();
-  }, []);
+  }, [loadCoronaData]);
 
   return (
     <>

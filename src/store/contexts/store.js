@@ -10,6 +10,8 @@ const initialState = {
   coronaData: [],
   coronaDataLoaded: false,
   nepalData: {},
+  hospitals: [],
+  hospitalsLoaded: false,
   questions: [],
   questionsLoaded: false,
   myths: [],
@@ -35,6 +37,13 @@ const StateProvider = ({ children }) => {
       });
     },
     nepalData: state.nepalData,
+    hospitals: state.hospitals,
+    hospitalsLoaded: state.hospitalsLoaded,
+    loadHospitals: () => {
+      axios("https://nepalcorona.info/api/v1/hospitals").then((res) =>
+        dispatch({ type: "LOAD_HOSPITALS", payload: [...res.data.data] })
+      );
+    },
     questions: state.questions,
     questionsLoaded: state.questionsLoaded,
     loadQuestions: () => {

@@ -4,6 +4,8 @@ const reducer = (state, action) => {
       return { ...state, coronaData: action.payload, coronaDataLoaded: true };
     case "LOAD_NEPAL_DATA":
       return { ...state, nepalData: action.payload, nepalDataLoaded: true };
+    case "LOAD_HOSPITALS":
+      return { ...state, hospitals: action.payload, hospitalsLoaded: true };
     case "LOAD_QUESTIONS":
       return { ...state, questions: action.payload, questionsLoaded: true };
     case "LOAD_MYTHS":

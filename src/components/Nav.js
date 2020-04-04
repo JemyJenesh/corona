@@ -10,9 +10,9 @@ const Nav = () => {
       </NavLink>
 
       <Menu.Menu position="right">
-        {/* <NavLink to="/hospitals" className="item" activeClassName="active">
+        <NavLink to="/hospitals" className="item" activeClassName="active">
           Hospitals
-        </NavLink> */}
+        </NavLink>
         <NavLink to="/myths" className="item" activeClassName="active">
           Myths
         </NavLink>

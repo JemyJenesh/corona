@@ -6,13 +6,13 @@ const Chart = ({ data }) => {
   return (
     <Grid stackable>
       <Grid.Row centered stretched>
-        <Grid.Column width={2}>
+        <Grid.Column width={3}>
           <Header as="h3" textAlign="center">
             Corona Data
           </Header>
 
           {data.map(({ rong, title, value }) => (
-            <Segment>
+            <Segment key={title}>
               <Label color={rong} attached="top">
                 {title}
               </Label>
