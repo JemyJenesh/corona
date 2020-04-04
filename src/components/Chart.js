@@ -4,7 +4,7 @@ import ReactMinimalPieChart from "react-minimal-pie-chart";
 
 const Chart = ({ data }) => {
   return (
-    <Grid>
+    <Grid stackable>
       <Grid.Row centered stretched>
         <Grid.Column width={2}>
           <Header as="h3" textAlign="center">
