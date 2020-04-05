@@ -1,5 +1,5 @@
 import React from "react";
-import { Label } from "semantic-ui-react";
+import { Segment, Label, Header } from "semantic-ui-react";
 import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 
@@ -21,13 +21,21 @@ const App = () => {
       }}
     >
       <Nav />
-      <Label as="a" color="blue" ribbon size="large">
-        Data source: https://nepalcorona.info/api/v1/data/
-      </Label>
+      <Segment>
+        <Label as="a" color="blue" ribbon size="large">
+          Data source: https://nepalcorona.info/api/v1/data/
+        </Label>
+        <br />
+        <Header as="h2" textAlign="center">
+          Stay safe inside your home.
+          <Header.Subheader>Only go out on emergency!</Header.Subheader>
+        </Header>
+        <br />
+        <Label as="a" color="teal" ribbon="right" size="large">
+          Presented by Jenesh
+        </Label>
+      </Segment>
       <br />
-      <Label as="a" color="teal" ribbon="right" size="large">
-        Presented by Jenesh
-      </Label>
       <br />
       <StateProvider>
         <Switch>
