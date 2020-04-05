@@ -8,10 +8,10 @@ const Banner = () => {
   return (
     <Grid columns="equal" stackable>
       <Grid.Column>
-        <Image src={cp} size="medium" rounded />
+        <Image src={cp} rounded fluid className="m-1" />
       </Grid.Column>
       <Grid.Column>
-        <Image src={cs} size="medium" rounded />
+        <Image src={cs} rounded fluid className="m-1" />
       </Grid.Column>
     </Grid>
   );

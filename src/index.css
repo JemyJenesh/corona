@@ -39,6 +39,11 @@ body {
   align-items: center;
 }
 
+.m-1 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .m-2 {
   margin-top: 2rem;
   margin-bottom: 2rem;

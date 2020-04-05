@@ -5,6 +5,7 @@ import { store } from "../store/contexts/store";
 import GridColumn from "../components/GridColumn";
 import Chart from "../components/Chart";
 import DataTable from "../components/DataTable";
+import Banner from "../components/Banner";
 
 const Home = () => {
   const {
@@ -51,6 +52,7 @@ const Home = () => {
 
   return (
     <>
+      <Banner />
       <Grid columns="equal" divided stackable>
         <Grid.Row>
           <GridColumn title="Nepal" data={nepalData} />
