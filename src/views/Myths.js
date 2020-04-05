@@ -13,6 +13,7 @@ const Myths = () => {
   };
 
   useEffect(() => {
+    document.title = "Myths about corona virus";
     loadMyths();
   }, [loadMyths]);
 

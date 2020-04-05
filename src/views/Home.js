@@ -2,10 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { Input, Grid, Loader, Segment } from "semantic-ui-react";
 
 import { store } from "../store/contexts/store";
+import Banner from "../components/Banner";
+import Hero from "../components/Hero";
 import GridColumn from "../components/GridColumn";
 import Chart from "../components/Chart";
 import DataTable from "../components/DataTable";
-import Banner from "../components/Banner";
 
 const Home = () => {
   const {
@@ -47,11 +48,13 @@ const Home = () => {
   ];
 
   useEffect(() => {
+    document.title = "Corona data (NP)";
     loadCoronaData();
   }, [loadCoronaData]);
 
   return (
     <>
+      <Hero />
       <Banner />
       <Grid columns="equal" divided stackable>
         <Grid.Row>

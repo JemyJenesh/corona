@@ -20,6 +20,7 @@ const Questions = () => {
   };
 
   useEffect(() => {
+    document.title = "Frequently asked questions";
     loadQuestions();
   }, [loadQuestions]);
 

@@ -14,6 +14,7 @@ const Hospitals = () => {
 
   useEffect(() => {
     loadHospitals();
+    document.title = "Hospitals in Nepal";
   }, [loadHospitals]);
 
   const showMap = (hosp) => {
