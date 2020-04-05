@@ -8,6 +8,7 @@ const Hero = () => (
       Data source: https://nepalcorona.info
     </Label>
     <br />
+    <br />
     <Label color="teal" ribbon="right" size="large">
       Presented by Jenesh
     </Label>
@@ -19,7 +20,7 @@ const Hero = () => (
     <Divider horizontal className="m-1">
       Or
     </Divider>
-    <Image src={police} rounded fluid className="m-1" />
+    <Image src={police} rounded fluid centered className="m-1" />
   </Segment>
 );
 
