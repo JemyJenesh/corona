@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Table, Modal, Loader } from "semantic-ui-react";
+import { Table, Modal, Loader, Header, Input } from "semantic-ui-react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
+import Highlighter from "react-highlight-words";
 
 import { store } from "../store/contexts/store";
 
 const Hospitals = () => {
   const { hospitals, hospitalsLoaded, loadHospitals } = useContext(store);
 
+  const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedHospital, setSelectedHospital] = useState(null);
 
@@ -96,7 +98,25 @@ const Hospitals = () => {
           )}
         </Modal.Content>
       </Modal>
-      <h3>Click to view in map with details</h3>
+      {hospitalsLoaded && (
+        <div
+          className="questions-header"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Header style={{ margin: "1rem 0 2rem 0" }}>
+            Click to view in map with details
+          </Header>
+          <Input
+            icon="search"
+            placeholder="Search..."
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      )}
       {hospitalsLoaded ? (
         <Table celled compact stackable selectable size="small">
           <Table.Header>
@@ -113,19 +133,43 @@ const Hospitals = () => {
 
           <Table.Body>
             {hospitals.length > 0 &&
-              hospitals.map((hosp, i) => (
-                <Table.Row key={hosp._id} onClick={() => showMap(hosp)}>
-                  <Table.Cell>{++i}</Table.Cell>
+              hospitals
+                .filter(
+                  (hosp) =>
+                    hosp.name
+                      .substring(0, search.length)
+                      .toLowerCase()
+                      .includes(search.toLowerCase()) ||
+                    hosp.address
+                      .substring(0, search.length)
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
+                )
+                .map((hosp, i) => (
+                  <Table.Row key={hosp._id} onClick={() => showMap(hosp)}>
+                    <Table.Cell>{++i}</Table.Cell>
 
-                  <Table.Cell>{hosp.name}</Table.Cell>
-                  <Table.Cell>{hosp.state}</Table.Cell>
-                  <Table.Cell>{hosp.address}</Table.Cell>
-                  <Table.Cell>{hosp.phone}</Table.Cell>
+                    <Table.Cell>
+                      <Highlighter
+                        searchWords={[search]}
+                        autoEscape={true}
+                        textToHighlight={hosp.name}
+                      />
+                    </Table.Cell>
+                    <Table.Cell>{hosp.state}</Table.Cell>
+                    <Table.Cell>
+                      <Highlighter
+                        searchWords={[search]}
+                        autoEscape={true}
+                        textToHighlight={hosp.address}
+                      />
+                    </Table.Cell>
+                    <Table.Cell>{hosp.phone}</Table.Cell>
 
-                  <Table.Cell>{hosp.contact_person}</Table.Cell>
-                  <Table.Cell>{hosp.contact_person_number}</Table.Cell>
-                </Table.Row>
-              ))}
+                    <Table.Cell>{hosp.contact_person}</Table.Cell>
+                    <Table.Cell>{hosp.contact_person_number}</Table.Cell>
+                  </Table.Row>
+                ))}
           </Table.Body>
         </Table>
       ) : (
