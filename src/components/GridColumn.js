@@ -9,7 +9,7 @@ const GridColumn = ({
   return (
     <Grid.Column>
       <Header as="h1" textAlign="center">
-        Cases in the {title}:
+        Cases in {title}:
       </Header>
       <Statistic.Group horizontal>
         <StatItem color="red" label="Deaths" data={totalDeaths} />

@@ -59,7 +59,10 @@ const Home = () => {
       <Grid columns="equal" divided stackable>
         <Grid.Row>
           <GridColumn title="Nepal" data={nepalData} />
-          <GridColumn title="World" data={coronaDataLoaded && coronaData[0]} />
+          <GridColumn
+            title="the World"
+            data={coronaDataLoaded && coronaData[0]}
+          />
         </Grid.Row>
       </Grid>
 
