@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 
 import Nav from "./components/Nav";
+import Banner from "./components/Banner";
 import Home from "./views/Home";
 import Hospitals from "./views/Hospitals";
 import Myths from "./views/Myths";
@@ -23,20 +24,21 @@ const App = () => {
       <Nav />
       <Segment>
         <Label as="a" color="blue" ribbon size="large">
-          Data source: https://nepalcorona.info/api/v1/data/
+          Data source: https://nepalcorona.info
         </Label>
         <br />
         <Header as="h2" textAlign="center">
           Stay safe inside your home.
-          <Header.Subheader>Only go out on emergency!</Header.Subheader>
+          <Header.Subheader>Only go out in emergency!</Header.Subheader>
         </Header>
         <br />
         <Label as="a" color="teal" ribbon="right" size="large">
           Presented by Jenesh
         </Label>
       </Segment>
-      <br />
-      <br />
+
+      <Banner />
+
       <StateProvider>
         <Switch>
           <Route path="/" exact component={Home} />
