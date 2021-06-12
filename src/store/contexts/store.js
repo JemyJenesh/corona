@@ -26,7 +26,7 @@ const StateProvider = ({ children }) => {
     coronaData: state.coronaData,
     coronaDataLoaded: state.coronaDataLoaded,
     loadCoronaData: () => {
-      axios("https://data.askbhunte.com/api/v1/data/world").then((res) => {
+      axios("https://data.askbhunte.com/api/v1/world").then((res) => {
         dispatch({ type: "LOAD_CORONA_DATA", payload: [...res.data] });
 
         res.data.filter(
@@ -40,21 +40,21 @@ const StateProvider = ({ children }) => {
     hospitals: state.hospitals,
     hospitalsLoaded: state.hospitalsLoaded,
     loadHospitals: () => {
-      axios("https://data.askbhunte.com/api/v1/hospitals").then((res) =>
+      axios("https://corona.askbhunte.com/api/v1/hospitals").then((res) =>
         dispatch({ type: "LOAD_HOSPITALS", payload: [...res.data.data] })
       );
     },
     questions: state.questions,
     questionsLoaded: state.questionsLoaded,
     loadQuestions: () => {
-      axios("https://data.askbhunte.com/api/v1/faqs").then((res) =>
+      axios("https://corona.askbhunte.com/api/v1/faqs").then((res) =>
         dispatch({ type: "LOAD_QUESTIONS", payload: [...res.data.data] })
       );
     },
     myths: state.myths,
     mythsLoaded: state.mythsLoaded,
     loadMyths: () => {
-      axios("https://data.askbhunte.com/api/v1/myths").then((res) =>
+      axios("https://corona.askbhunte.com/api/v1/myths").then((res) =>
         dispatch({ type: "LOAD_MYTHS", payload: [...res.data.data] })
       );
     },
